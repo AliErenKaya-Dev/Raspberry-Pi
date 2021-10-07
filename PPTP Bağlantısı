@@ -1,0 +1,65 @@
+PPTP Bağlantısını kurabilmek için öncelikle PPTP Client ını kurmamız gerekecektir.
+
+Bunun için terminale aşağıda yer alan komutu yazmalısınız.
+
+
+Kod:
+sudo apt-get install pptp-linux
+
+Daha sonrasında /etc/ppp/peers/ dizininde bir dosya oluşturmamız gerekiyor. Bu dosya bizim vpn bilgilerimizi barındıracak olan dosyadır.
+
+Bir dosya oluşturmak için terminale (biz temp adını kullanacağız.) aşağıdaki komutu yazmalısınız.
+
+Kod:
+sudo nano /etc/ppp/peers/temp
+
+Açılan boş sayfaya aşağıda bulunan bilgileri kendinize göre düzenleyip yazmalısınız...
+
+Kod:
+pty "pptp VPNSUNUCUIP --nolaunchpppd --debug"
+name KULLANICIADI
+password ŞİFRE
+remotename PPTP
+require-mppe-128
+require-mschap-v2
+refuse-eap
+refuse-pap
+refuse-chap
+refuse-mschap
+noauth
+debug
+persist
+maxfail 0
+defaultroute
+replacedefaultroute
+usepeerdns
+
+Tüm işlemi tamamladıktan sonra CTRL + X tuşuna tıklayıp düzenlemeyi sonlandırıp size belirtilen harf ile kaydedip ENTER tuşuna basmalısınız.
+
+Dosyayı başarılı bir şekilde kaydettikten sonra bağlantı sağlamak için terminale aşağıdaki komutu yazmalısınız.
+
+Kod:
+sudo pon /etc/ppp/peers/temp
+
+
+veya aşağıdaki komutu yazmanız gerekmektedir.
+
+Kod:
+sudo pon temp
+ 
+(Hata vermezse sudo pon temp yazarak kısa bir komut ile bağlanabilirsiniz eğer ki verirse diğer uzun olanı yazmanız gerekli olacaktır.).
+
+Bağlantıyı kontrol etmek için terminale aşağıdaki komutu yazın.
+
+Kod:
+wget -q -O - http://icanhazip.com/ | tail
+
+Bağlantıyı kesmek için aşağıdaki komutu yazmanız gerekiyor.
+
+Kod:
+sudo poff temp
+
+Eğer ki hata verirse aşağıdaki komutu yazmayı deneyin.
+
+Kod:
+sudo poff /etc/ppp/peers/temp
